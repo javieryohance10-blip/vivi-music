@@ -314,7 +314,7 @@ fun UpdateScreen(navController: NavHostController) {
                                                     ContextCompat.startActivity(context, installIntent, null)
                                                 }
                                             } else {
-                                                val targetApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "izzydroid-universal-foss-release.apk" else "aura.apk"
+                                                val targetApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "aura-foss.apk" else "aura.apk"
                                                 val urlToDownload = currentStatus.apkUrl ?: "https://github.com/vivizzz007/vivi-music/releases/download/${currentStatus.version}/$targetApkName"
                                                 
                                                 if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) {
@@ -923,7 +923,7 @@ suspend fun checkForUpdate(
 
                     var apkSizeInMB = ""
                     var apkDownloadUrl = ""
-                    val expectedApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "izzydroid-universal-foss-release.apk" else "aura.apk"
+                    val expectedApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "aura-foss.apk" else "aura.apk"
                     for (j in 0 until assets.length()) {
                         val asset = assets.getJSONObject(j)
                         val assetName = asset.getString("name")
