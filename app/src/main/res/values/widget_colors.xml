@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Widget colors fallback for Android < 12 (API 31) -->
-    <!-- Material 3 Primary Container (Light) -->
-    <color name="widget_primary_container">#EADDFF</color>
-    <color name="widget_on_primary_container">#21005D</color>
+    <!-- AURA Material 3 monochrome widget colors for light mode -->
+    <color name="widget_primary_container">#E5E5E5</color>
+    <color name="widget_on_primary_container">#171717</color>
 
-    <!-- Material 3 Tertiary Container (Light) - For like button -->
-    <color name="widget_tertiary_container">#FFD8E4</color>
-    <color name="widget_on_tertiary_container">#31111D</color>
+    <!-- AURA neutral tertiary container -->
+    <color name="widget_tertiary_container">#D6D6D6</color>
+    <color name="widget_on_tertiary_container">#202020</color>
 
-    <!-- Play button colors (Low style) -->
+    <!-- Play button colors (low style) -->
     <color name="widget_play_button_low_bg">@color/widget_primary_container</color>
     <color name="widget_play_button_low_icon">@color/widget_on_primary_container</color>
 </resources>
