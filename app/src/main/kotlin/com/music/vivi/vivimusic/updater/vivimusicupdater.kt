@@ -314,7 +314,7 @@ fun UpdateScreen(navController: NavHostController) {
                                                     ContextCompat.startActivity(context, installIntent, null)
                                                 }
                                             } else {
-                                                val targetApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "izzydroid-universal-foss-release.apk" else "vivi.apk"
+                                                val targetApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "izzydroid-universal-foss-release.apk" else "aura.apk"
                                                 val urlToDownload = currentStatus.apkUrl ?: "https://github.com/vivizzz007/vivi-music/releases/download/${currentStatus.version}/$targetApkName"
                                                 
                                                 if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) {
@@ -404,7 +404,7 @@ fun UpdateScreen(navController: NavHostController) {
                             else -> "V${rawVersion.uppercase()}"
                         }
                         Text(
-                            text = "VIVI MUSIC $displayVer",
+                            text = "AURA MUSIC $displayVer",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -500,7 +500,7 @@ fun UpdateScreen(navController: NavHostController) {
                                             else -> "V${rawVersion.uppercase()}"
                                         }
                                         Text(
-                                            text = "VIVI MUSIC VERSION $displayVer",
+                                            text = "AURA MUSIC VERSION $displayVer",
                                             style = MaterialTheme.typography.titleMedium,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.onBackground
@@ -806,7 +806,7 @@ suspend fun checkForUpdate(
 ) {
     withContext(Dispatchers.IO) {
         try {
-            val url = URL("https://api.github.com/repos/vivizzz007/vivi-music/releases")
+            val url = URL("https://api.github.com/repos/javieryohance10-blip/vivi-music/releases")
             val json = url.openStream().bufferedReader().use { it.readText() }
             val releases = JSONArray(json)
             
@@ -923,7 +923,7 @@ suspend fun checkForUpdate(
 
                     var apkSizeInMB = ""
                     var apkDownloadUrl = ""
-                    val expectedApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "izzydroid-universal-foss-release.apk" else "vivi.apk"
+                    val expectedApkName = if (BuildConfig.FLAVOR.contains("foss", ignoreCase = true)) "izzydroid-universal-foss-release.apk" else "aura.apk"
                     for (j in 0 until assets.length()) {
                         val asset = assets.getJSONObject(j)
                         val assetName = asset.getString("name")

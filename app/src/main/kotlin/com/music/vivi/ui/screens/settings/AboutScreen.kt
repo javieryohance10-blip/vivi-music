@@ -1,5 +1,5 @@
 /**
- * vivimusic Project (C) 2026
+ * AURA Music project (C) 2026
  * Licensed under GPL-3.0 | See git history for contributors
  */
 
@@ -89,7 +89,6 @@ fun AboutScreen(
     }
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
-    var showSupportDialog by remember { mutableStateOf(false) }
     val unknownString = stringResource(R.string.unknown)
 
     val cloverShape = MaterialShapes.Clover4Leaf.toShape()
@@ -121,9 +120,9 @@ fun AboutScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         AppVersionTile(
-            appName = stringResource(R.string.vivi_music_title),
+            appName = "AURA Music",
             description = "v${BuildConfig.VERSION_NAME} • ${stringResource(if (BuildConfig.IS_NIGHTLY) R.string.build_nightly else R.string.build_stable)}",
-            onGithubClick = { uriHandler.safeOpenUri(context, "https://github.com/vivizzz007/vivi-music") }
+            onGithubClick = { uriHandler.safeOpenUri(context, "https://github.com/javieryohance10-blip/vivi-music") }
         )
         
         Spacer(modifier = Modifier.height(10.dp))
@@ -132,8 +131,8 @@ fun AboutScreen(
         ExpressiveSettingGroup(
             items = listOf(
                 Material3SettingsItem(
-                    title = { Text(stringResource(R.string.app_developer), color = MaterialTheme.colorScheme.primary) },
-                    description = { Text(stringResource(R.string.developer_name)) },
+                    title = { Text("AURA Music project", color = MaterialTheme.colorScheme.primary) },
+                    description = { Text("AURA Music contributors") },
                     leadingContent = {
                         Image(
                             painter = painterResource(R.drawable.dev),
@@ -144,14 +143,15 @@ fun AboutScreen(
                             contentScale = ContentScale.Crop
                         )
                     },
-                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/vivizzz007") },
+                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/javieryohance10-blip") },
                     isExternalLink = true
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.favorite),
-                    title = { Text(stringResource(R.string.support)) },
-                    description = { Text(stringResource(R.string.support_desc)) },
-                    onClick = { showSupportDialog = true }
+                    title = { Text("Source code and support") },
+                    description = { Text("Issues, discussions, and project updates") },
+                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/javieryohance10-blip/vivi-music/issues") },
+                    isExternalLink = true
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.star),
@@ -174,21 +174,9 @@ fun AboutScreen(
                             Text("...")
                         }
                     },
-                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/vivizzz007/vivi-music") },
+                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/javieryohance10-blip/vivi-music") },
                     isExternalLink = true
                 ),
-                Material3SettingsItem(
-                    icon = painterResource(R.drawable.web_link),
-                    title = { Text(stringResource(R.string.website)) },
-                    onClick = { uriHandler.safeOpenUri(context, "https://vivimusic.mkmdevilmi.workers.dev/") },
-                    isExternalLink = true
-                ),
-                Material3SettingsItem(
-                    icon = painterResource(R.drawable.telegram),
-                    title = { Text(stringResource(R.string.telegram_channel)) },
-                    onClick = { uriHandler.safeOpenUri(context, "https://t.me/vivimusicapp") },
-                    isExternalLink = true
-                )
             )
         )
 //        Spacer(modifier = Modifier.height(10.dp))
@@ -227,21 +215,12 @@ fun AboutScreen(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.license_vivi),
                     title = { Text(stringResource(R.string.license)) },
-                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/vivizzz007/vivi-music/blob/main/LICENSE") },
+                    onClick = { uriHandler.safeOpenUri(context, "https://github.com/javieryohance10-blip/vivi-music/blob/main/LICENSE") },
                     isExternalLink = true
                 ),
             )
         )
         Spacer(modifier = Modifier.height(10.dp))
-    }
-
-    if (showSupportDialog) {
-        SupportDialog(
-            onDismiss = { showSupportDialog = false },
-            onPayPal = { uriHandler.safeOpenUri(context, "https://www.paypal.me/vividhpashokan") },
-            onUPI = { uriHandler.safeOpenUri(context, "upi://pay?pa=vividhpashokan@axl&pn=Vividh P Ashokan") },
-            onCoffee = { uriHandler.safeOpenUri(context, "https://ko-fi.com/vividhpashokan") }
-        )
     }
 
     TopAppBar(

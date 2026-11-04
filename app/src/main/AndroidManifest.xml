@@ -23,7 +23,7 @@
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
 
 
-    <!-- Storage permissions for auto backup to Downloads/vivimusic/ -->
+    <!-- Storage permissions for auto backup to Downloads/AURA Music/ -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
@@ -109,7 +109,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="vivimusic" />
+                <data android:scheme="aura" />
                 <data android:host="listen" />
             </intent-filter>
 
@@ -120,7 +120,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="vivimusic" />
+                <data android:scheme="aura" />
                 <data android:host="oauth2callback" />
             </intent-filter>
 

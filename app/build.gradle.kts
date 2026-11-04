@@ -22,7 +22,7 @@ android {
     ndkVersion = "27.0.12077973"
 
     defaultConfig {
-        applicationId = "com.vivi.vivimusic"
+        applicationId = "com.aura.music"
         minSdk = 26
         targetSdk = 37
         versionCode = 78
@@ -32,7 +32,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        // AURA is local-first; Last.fm integration is disabled during provider removal.
+        // AURA branding uses the upstream Last.fm integration; credentials are supplied through local build configuration.
         val lastFmKey = ""
         val lastFmSecret = ""
         buildConfigField("String", "LASTFM_API_KEY", "\"$lastFmKey\"")
