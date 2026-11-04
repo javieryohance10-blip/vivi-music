@@ -386,13 +386,25 @@ fun PlayerV2(
                     .padding(top = 10.dp, bottom = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "AURA",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = adaptiveSecondary,
-                    letterSpacing = 2.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_launcher_foreground),
+                        contentDescription = "AURA",
+                        tint = adaptivePrimary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(7.dp))
+                    Text(
+                        text = "AURA",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = adaptiveSecondary,
+                        letterSpacing = 2.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     modifier = Modifier
