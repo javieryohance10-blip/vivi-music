@@ -948,14 +948,25 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 12.dp)
                     ) {
-                        Text(
-                            text = "AURA",
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.headlineSmall.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                letterSpacing = 2.sp
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(9.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_launcher_foreground),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(25.dp)
                             )
-                        )
+                            Text(
+                                text = "AURA",
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.headlineSmall.copy(
+                                    fontWeight = FontWeight.SemiBold,
+                                    letterSpacing = 2.sp
+                                )
+                            )
+                        }
                     }
                 }
 
