@@ -89,7 +89,6 @@ import com.materialkolor.PaletteStyle
 import com.materialkolor.rememberDynamicColorScheme
 import com.music.vivi.R
 import com.music.vivi.constants.DarkModeKey
-import com.music.vivi.constants.DynamicThemeKey
 import com.music.vivi.constants.PureBlackKey
 import com.music.vivi.constants.PureBlackMiniPlayerKey
 import com.music.vivi.constants.SelectedThemeColorKey
@@ -104,28 +103,9 @@ data class ThemePalette(
     val seedColor: Color
 )
 
+// AURA keeps the interface monochrome; album artwork remains independently colorful.
 val PaletteColors = listOf(
-    ThemePalette(R.string.palette_dynamic, Color.Transparent), // Sentinel for System/Dynamic colors
-    ThemePalette(R.string.palette_crimson, Color(0xFFEC5464)), // Slightly shifted from DefaultThemeColor (0xFFED5564) to avoid conflict
-    ThemePalette(R.string.palette_rose, Color(0xFFD81B60)),
-    ThemePalette(R.string.palette_purple, Color(0xFF8E24AA)),
-    ThemePalette(R.string.palette_monochrome, Color(0xFF000000)),
-    ThemePalette(R.string.palette_deep_purple, Color(0xFF5E35B1)),
-    ThemePalette(R.string.palette_indigo, Color(0xFF3949AB)),
-    ThemePalette(R.string.palette_blue, Color(0xFF1E88E5)),
-    ThemePalette(R.string.palette_sky_blue, Color(0xFF039BE5)),
-    ThemePalette(R.string.palette_cyan, Color(0xFF00ACC1)),
-    ThemePalette(R.string.palette_teal, Color(0xFF00897B)),
-    ThemePalette(R.string.palette_green, Color(0xFF43A047)),
-    ThemePalette(R.string.palette_light_green, Color(0xFF7CB342)),
-    ThemePalette(R.string.palette_lime, Color(0xFFC0CA33)),
-    ThemePalette(R.string.palette_yellow, Color(0xFFFDD835)),
-    ThemePalette(R.string.palette_amber, Color(0xFFFFB300)),
-    ThemePalette(R.string.palette_orange, Color(0xFFFB8C00)),
-    ThemePalette(R.string.palette_deep_orange, Color(0xFFF4511E)),
-    ThemePalette(R.string.palette_brown, Color(0xFF6D4C41)),
-    ThemePalette(R.string.palette_grey, Color(0xFF757575)),
-    ThemePalette(R.string.palette_blue_grey, Color(0xFF546E7A)),
+    ThemePalette(R.string.palette_monochrome, Color.Black),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,7 +128,6 @@ fun ThemeSettings(
         SelectedThemeColorKey,
         DefaultThemeColor.toArgb()
     )
-    val (_, onDynamicThemeChange) = rememberPreference(DynamicThemeKey, defaultValue = true)
 
     val selectedThemeColor = Color(selectedThemeColorInt)
     val configuration = LocalConfiguration.current
@@ -157,10 +136,6 @@ fun ThemeSettings(
     // Helper function to handle color selection with dynamic theme toggle
     val handleColorSelection: (Color) -> Unit = { color ->
         onSelectedThemeColorChange(color.toArgb())
-        // Enable dynamic theme only when selecting the default/dynamic color
-        // Disable it when selecting any other color
-        val isDynamicColor = color == DefaultThemeColor
-        onDynamicThemeChange(isDynamicColor)
     }
 
     Scaffold(
@@ -310,9 +285,6 @@ fun ThemeControls(
     selectedThemeColor: Color,
     onSelectedThemeColorChange: (Color) -> Unit
 ) {
-    val (dynamicTheme, onDynamicThemeChange) = rememberPreference(DynamicThemeKey, defaultValue = true)
-    val isUsingCustomColor = selectedThemeColor != DefaultThemeColor
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -420,30 +392,7 @@ fun ThemeControls(
                     )
                 )
 
-                if (!isUsingCustomColor) {
-                    add(
-                        Material3SettingsItem(
-                            icon = painterResource(R.drawable.dynamic),
-                            title = { Text(stringResource(R.string.enable_dynamic_theme)) },
-                            trailingContent = {
-                                Switch(
-                                    checked = dynamicTheme,
-                                    onCheckedChange = onDynamicThemeChange,
-                                    thumbContent = {
-                                        Icon(
-                                            painter = painterResource(
-                                                id = if (dynamicTheme) R.drawable.check else R.drawable.close
-                                            ),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(SwitchDefaults.IconSize)
-                                        )
-                                    }
-                                )
-                            },
-                            onClick = { onDynamicThemeChange(!dynamicTheme) }
-                        )
-                    )
-                }
+
             }
         )
     }
