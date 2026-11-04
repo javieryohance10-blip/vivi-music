@@ -6,14 +6,10 @@
 package com.music.vivi.ui.theme
 
 import android.graphics.Bitmap
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
@@ -21,13 +17,8 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.palette.graphics.Palette
-import com.materialkolor.PaletteStyle
-import com.materialkolor.dynamiccolor.ColorSpec
-import com.materialkolor.rememberDynamicColorScheme
 import com.materialkolor.score.Score
-
 import androidx.compose.runtime.getValue
 import com.music.vivi.constants.SelectedFontKey
 import com.music.vivi.constants.CustomFontPathKey
@@ -46,7 +37,6 @@ fun vivimusicTheme(
     themeColor: Color = DefaultThemeColor,
     content: @Composable () -> Unit,
 ) {
-    val context = LocalContext.current
     val selectedFontValue by rememberPreference(SelectedFontKey, AppFont.SYSTEM.value)
     val customFontPath by rememberPreference(CustomFontPathKey, "")
 
@@ -64,47 +54,54 @@ fun vivimusicTheme(
                         FontFamily.Default
                     }
                 } catch (e: Exception) {
-                    e.printStackTrace()
                     FontFamily.Default
                 }
             }
         }
     }
 
-        val typography = remember(brandFont) {
+    val typography = remember(brandFont) {
         getTypography(brandFont = brandFont, plainFont = brandFont)
     }
 
-
-    // Determine if system dynamic colors should be used (Android S+ and default theme color)
-    val useSystemDynamicColor = (themeColor == DefaultThemeColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-
-    // Select the appropriate color scheme generation method
-    val baseColorScheme = if (useSystemDynamicColor) {
-        // Use standard Material 3 dynamic color functions for system wallpaper colors
-        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    } else {
-        // Use materialKolor only when a specific seed color is provided
-        rememberDynamicColorScheme(
-            seedColor = themeColor, // themeColor is guaranteed non-default here
-            isDark = darkTheme,
-            specVersion = ColorSpec.SpecVersion.SPEC_2025,
-            style = if (themeColor.toArgb() == 0xFF000000.toInt()) PaletteStyle.Monochrome else PaletteStyle.TonalSpot
-        )
-    }
-
-    // Apply pureBlack modification if needed, similar to original logic
-    val colorScheme = remember(baseColorScheme, pureBlack, darkTheme) {
-        if (darkTheme && pureBlack) {
-            baseColorScheme.pureBlack(true)
+    // AURA uses a fixed monochrome palette; wallpaper and artwork colors never recolor the interface.
+    val colorScheme = remember(darkTheme, pureBlack) {
+        if (darkTheme) {
+            androidx.compose.material3.darkColorScheme(
+                primary = Color(0xFFE5E5E5),
+                onPrimary = Color(0xFF171717),
+                secondary = Color(0xFFBDBDBD),
+                onSecondary = Color(0xFF1C1C1C),
+                tertiary = Color(0xFF9E9E9E),
+                background = Color(0xFF101010),
+                onBackground = Color(0xFFF5F5F5),
+                surface = if (pureBlack) Color.Black else Color(0xFF151515),
+                onSurface = Color(0xFFF5F5F5),
+                surfaceVariant = Color(0xFF292929),
+                onSurfaceVariant = Color(0xFFCACACA),
+                outline = Color(0xFF777777)
+            )
         } else {
-            baseColorScheme
+            androidx.compose.material3.lightColorScheme(
+                primary = Color(0xFF262626),
+                onPrimary = Color.White,
+                secondary = Color(0xFF555555),
+                onSecondary = Color.White,
+                tertiary = Color(0xFF737373),
+                background = Color(0xFFF7F7F7),
+                onBackground = Color(0xFF171717),
+                surface = Color.White,
+                onSurface = Color(0xFF171717),
+                surfaceVariant = Color(0xFFEAEAEA),
+                onSurfaceVariant = Color(0xFF454545),
+                outline = Color(0xFF858585)
+            )
         }
     }
 
     MaterialExpressiveTheme(
         colorScheme = colorScheme,
-        typography = typography, // Use the dynamically configured typography
+        typography = typography,
         motionScheme = MotionScheme.expressive(),
         content = content
     )
