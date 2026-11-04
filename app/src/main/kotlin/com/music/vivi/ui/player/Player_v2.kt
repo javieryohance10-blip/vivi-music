@@ -379,18 +379,26 @@ fun PlayerV2(
                     .padding(top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding())
                     .padding(bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding())
             ) {
-            // Minimal drag handle header
-            Row(
+            // AURA's compact slide-over player header, adapted for touch screens.
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 8.dp),
-                horizontalArrangement = Arrangement.Center
+                    .padding(top = 10.dp, bottom = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = "AURA",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = adaptiveSecondary,
+                    letterSpacing = 2.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     modifier = Modifier
-                        .width(48.dp)
-                        .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp))
+                        .width(36.dp)
+                        .height(4.dp)
+                        .clip(RoundedCornerShape(2.dp))
                         .background(adaptivePrimary.copy(alpha = 0.3f))
                         .clickable { state.collapseSoft() }
                 )
@@ -434,11 +442,11 @@ fun PlayerV2(
                                         .aspectRatio(1f)
                                         .customSoftShadow(
                                             elevation = playerThumbnailShadowElevation.dp, 
-                                            cornerRadius = 12.dp, 
+                                            cornerRadius = 18.dp, 
                                             enabled = showPlayerThumbnailShadow
                                         )
-                                        .background(adaptiveSurface, RoundedCornerShape(12.dp))
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .background(adaptiveSurface, RoundedCornerShape(18.dp))
+                                        .clip(RoundedCornerShape(18.dp))
                                         .SwipeGesture(
                                             enabled = (playerState == PlayerInternalState.COVER && !isListenTogetherGuest),
                                             onSwipeLeft = { if (canSkipNext) playerConnection.seekToNext() },
