@@ -942,6 +942,23 @@ fun HomeScreen(
                     IntOffset(0, (animatedFraction * maxOffsetPx).toInt())
                 }
             ) {
+                item(key = "aura_wordmark") {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 12.dp)
+                    ) {
+                        Text(
+                            text = "AURA",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.SemiBold,
+                                letterSpacing = 2.sp
+                            )
+                        )
+                    }
+                }
+
                 item {
                     ChipsRow(
                         chips = homePage?.chips
