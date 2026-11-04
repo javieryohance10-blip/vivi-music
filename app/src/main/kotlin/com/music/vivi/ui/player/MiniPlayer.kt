@@ -276,7 +276,7 @@ private fun NewMiniPlayer(
     )
     
     // Memoize colors
-    val backgroundColor = if (pureBlack && useDarkTheme) Color.Black else MaterialTheme.colorScheme.surfaceContainer
+    val backgroundColor = if (pureBlack && useDarkTheme) Color.Black else MaterialTheme.colorScheme.surface
     val isDynamicBackground = miniPlayerBackground != PlayerBackgroundStyle.DEFAULT
     
     val primaryColor = if (isDynamicBackground) Color.White else MaterialTheme.colorScheme.primary
@@ -1009,7 +1009,7 @@ internal fun MiniPlayerColorExtractor(
     onGradientColorsChange: (List<Color>) -> Unit
 ) {
     val context = LocalContext.current
-    val fallbackColor = MaterialTheme.colorScheme.surfaceContainer.toArgb()
+    val fallbackColor = MaterialTheme.colorScheme.surface.toArgb()
 
     LaunchedEffect(mediaMetadata?.id, miniPlayerBackground) {
         if (miniPlayerBackground == PlayerBackgroundStyle.GRADIENT || miniPlayerBackground == PlayerBackgroundStyle.GLOW_ANIMATED) {
