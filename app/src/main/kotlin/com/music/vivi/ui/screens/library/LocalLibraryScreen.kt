@@ -65,7 +65,6 @@ private data class LocalTrack(
     val artist: String,
     val album: String,
     val folder: String,
-    val duration: Long,
 )
 
 private data class LocalGroup(val name: String, val tracks: List<LocalTrack>)
@@ -82,6 +81,7 @@ fun LocalLibraryScreen(onBack: () -> Unit) {
     var tracks by remember { mutableStateOf<List<LocalTrack>>(emptyList()) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    var refresh by remember { mutableIntStateOf(0) }
     var section by rememberSaveable { mutableStateOf(LocalSection.SONGS) }
     var selectedGroup by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -92,7 +92,7 @@ fun LocalLibraryScreen(onBack: () -> Unit) {
         }
     }
 
-    LaunchedEffect(granted) {
+    LaunchedEffect(granted, refresh) {
         if (granted) {
             loading = true
             error = null
@@ -134,10 +134,12 @@ fun LocalLibraryScreen(onBack: () -> Unit) {
             Text("Allow AURA to read audio files on this device. This permission is used only to display and play your local music.", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(vertical = 16.dp))
             if (showSettings) {
                 Text("Audio access is disabled. Enable Music and audio permission in app settings.", style = MaterialTheme.typography.bodyMedium)
+                TextButton(onClick = { granted = ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED; if (granted) showSettings = false }) { Text("Check permission") }
                 Button(onClick = {
                     context.startActivity(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null)))
                 }) { Text("Open app settings") }
             } else {
+                if (requestCount > 0) Text("Permission was denied. You can try again or enable it in app settings.", style = MaterialTheme.typography.bodySmall)
                 Button(onClick = { requestCount++; permissionLauncher.launch(permission) }) {
                     Text(if (requestCount == 0) "Allow access" else "Try again")
                 }
@@ -152,7 +154,7 @@ fun LocalLibraryScreen(onBack: () -> Unit) {
                 loading -> CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally).padding(24.dp))
                 error != null -> Column {
                     Text(error!!, color = MaterialTheme.colorScheme.error)
-                    TextButton(onClick = { granted = false; granted = true }) { Text("Retry") }
+                    TextButton(onClick = { refresh++ }) { Text("Retry") }
                 }
                 tracks.isEmpty() -> Text("No music files found on this device.", modifier = Modifier.padding(vertical = 24.dp))
                 selectedGroup == null && section != LocalSection.SONGS -> LazyColumn {
@@ -187,13 +189,12 @@ private fun readLocalTracks(context: Context): List<LocalTrack> {
     val resolver = context.contentResolver
     val collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
     val pathColumn = if (Build.VERSION.SDK_INT >= 29) MediaStore.MediaColumns.RELATIVE_PATH else MediaStore.MediaColumns.DATA
-    val projection = arrayOf(MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.DURATION, pathColumn)
+    val projection = arrayOf(MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM, pathColumn)
     return resolver.query(collection, projection, "${MediaStore.Audio.Media.IS_MUSIC} != 0", null, "${MediaStore.Audio.Media.TITLE} COLLATE NOCASE ASC")?.use { cursor ->
         val id = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
         val title = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
         val artist = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
         val album = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
-        val duration = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
         val path = cursor.getColumnIndexOrThrow(pathColumn)
         buildList {
             while (cursor.moveToNext()) {
@@ -205,7 +206,6 @@ private fun readLocalTracks(context: Context): List<LocalTrack> {
                     artist = cursor.getString(artist).orEmpty().ifBlank { "Unknown artist" },
                     album = cursor.getString(album).orEmpty().ifBlank { "Unknown album" },
                     folder = folder.ifBlank { "Unknown folder" },
-                    duration = cursor.getLong(duration),
                 ))
             }
         }
